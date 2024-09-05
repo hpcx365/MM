@@ -10,7 +10,7 @@ public class Solve2 {
     
     public static void main(String[] args) throws Exception {
         Curve curve = new Curve(0.55);
-        double deltaTime = 0.0001;
+        double deltaTime = 0.00002;
         long step = 0;
         
         PrintWriter writer = new PrintWriter(new FileWriter("collide.txt"));
@@ -23,6 +23,7 @@ public class Solve2 {
             System.out.printf("%.06f %b\n", time, check);
             if (!check) {
                 writer.println(time);
+                break;
             }
         }
     }
