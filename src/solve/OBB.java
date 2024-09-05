@@ -17,10 +17,10 @@ public class OBB {
         double hw = 0.5 * width;
         double hh = 0.5 * height;
         this.points = new Vector[] {
-                new Vector(center.x - hw, center.y - hh),
-                new Vector(center.x + hw, center.y - hh),
-                new Vector(center.x + hw, center.y + hh),
-                new Vector(center.x - hw, center.y + hh),
+                center.add(new Vector(-hw, -hh).rotate(angle)),
+                center.add(new Vector(hw, -hh).rotate(angle)),
+                center.add(new Vector(hw, hh).rotate(angle)),
+                center.add(new Vector(-hw, hh).rotate(angle))
         };
     }
     
@@ -52,7 +52,7 @@ public class OBB {
     
     private Range projection(Vector axis) {
         double min = Double.MAX_VALUE;
-        double max = Double.MIN_VALUE;
+        double max = -Double.MAX_VALUE;
         for (Vector point : points) {
             double proj = point.dot(axis);
             min = Math.min(min, proj);

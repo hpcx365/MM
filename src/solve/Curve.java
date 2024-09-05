@@ -1,7 +1,6 @@
 package solve;
 
-import static solve.Utils.HPI;
-import static solve.Utils.OODPI;
+import static solve.Utils.*;
 
 public class Curve {
     
@@ -30,6 +29,10 @@ public class Curve {
     
     public double L(double theta) {
         return 0.5 * k * theta * theta;
+    }
+    
+    public double toTheta(double time) {
+        return Math.sqrt(2.0 / k * (L(INIT_THETA) - time * HEAD_VELOCITY));
     }
     
     public double chord(double theta1, double theta2) {

@@ -17,13 +17,28 @@ public class Utils {
     public static final double HEAD_VELOCITY = 1.0;
     
     public static Vector[] points(double time, Curve curve) {
-        double theta = Math.sqrt(2.0 / curve.k * (curve.L(INIT_THETA) - time * HEAD_VELOCITY));
+        double theta = curve.toTheta(time);
         Vector[] res = new Vector[NUM_BENCH + 1];
         for (int i = 0; i <= NUM_BENCH; i++) {
             res[i] = curve.p(theta);
             theta = nextTheta(theta, (i == 0 ? HEAD_LENGTH : COMMON_LENGTH) - 2.0 * EXTENT_LENGTH, curve);
         }
         return res;
+    }
+    
+    public static boolean check(Vector[] points) {
+        OBB[] obb = new OBB[NUM_BENCH];
+        for (int i = 0; i < NUM_BENCH; i++) {
+            obb[i] = OBB.of(points[i], points[i + 1], i == 0);
+        }
+        for (int i = 0; i < NUM_BENCH; i++) {
+            for (int j = i + 2; j < NUM_BENCH; j++) {
+                if (obb[i].collide(obb[j])) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
     
     public static double nextTheta(double theta, double chord, Curve curve) {

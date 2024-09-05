@@ -9,6 +9,16 @@ public class Vector {
         this.y = y;
     }
     
+    public Vector add(Vector o) {
+        return new Vector(x + o.x, y + o.y);
+    }
+    
+    public Vector rotate(double angle) {
+        double cos = Math.cos(angle);
+        double sin = Math.sin(angle);
+        return new Vector(x * cos - y * sin, x * sin + y * cos);
+    }
+    
     public Vector midpoint(Vector o) {
         return new Vector((x + o.x) * 0.5, (y + o.y) * 0.5);
     }
