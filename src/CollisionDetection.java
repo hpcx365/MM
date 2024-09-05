@@ -1,37 +1,31 @@
 public class CollisionDetection {
     
-    public static boolean intersect(OBB2D obb1, OBB2D obb2) {
-        Vector2[] axes = getAxes(obb1, obb2);
-        for (Vector2 axis : axes) {
-            if (!overlap(obb1, obb2, axis)) {
-                return false;
-            }
+    public static boolean collide(OBB obb1, OBB obb2) {
+        if (detached(obb1, obb2, new Vector(Math.cos(obb1.angle), Math.sin(obb1.angle)))) {
+            return false;
+        }
+        if (detached(obb1, obb2, new Vector(-Math.sin(obb1.angle), Math.cos(obb1.angle)))) {
+            return false;
+        }
+        if (detached(obb1, obb2, new Vector(Math.cos(obb2.angle), Math.sin(obb2.angle)))) {
+            return false;
+        }
+        if (detached(obb1, obb2, new Vector(-Math.sin(obb2.angle), Math.cos(obb2.angle)))) {
+            return false;
         }
         return true;
     }
     
-    private static Vector2[] getAxes(OBB2D obb1, OBB2D obb2) {
-        Vector2[] axes = new Vector2[4];
-        axes[0] = new Vector2(Math.cos(obb1.angle), Math.sin(obb1.angle));
-        axes[1] = new Vector2(-Math.sin(obb1.angle), Math.cos(obb1.angle));
-        axes[2] = new Vector2(Math.cos(obb2.angle), Math.sin(obb2.angle));
-        axes[3] = new Vector2(-Math.sin(obb2.angle), Math.cos(obb2.angle));
-        return axes;
+    private static boolean detached(OBB obb1, OBB obb2, Vector axis) {
+        Range range1 = projection(obb1, axis);
+        Range range2 = projection(obb2, axis);
+        return range1.min > range2.max || range2.min > range1.max;
     }
     
-    private static boolean overlap(OBB2D obb1, OBB2D obb2, Vector2 axis) {
-        double min1 = projection(obb1, axis).min;
-        double max1 = projection(obb1, axis).max;
-        double min2 = projection(obb2, axis).min;
-        double max2 = projection(obb2, axis).max;
-        
-        return max1 < min2 || max2 < min1;
-    }
-    
-    private static Range projection(OBB2D obb, Vector2 axis) {
+    private static Range projection(OBB obb, Vector axis) {
         double min = Double.MAX_VALUE;
         double max = Double.MIN_VALUE;
-        for (Vector2 point : obb.points) {
+        for (Vector point : obb.points) {
             double proj = point.dot(axis);
             min = Math.min(min, proj);
             max = Math.max(max, proj);
