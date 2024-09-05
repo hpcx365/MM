@@ -6,6 +6,7 @@ public class Solve {
     public static final double DPI = 2.0 * PI;
     public static final double HPI = 0.5 * PI;
     public static final double OODPI = 1.0 / DPI;
+    public static final double EPS = 1.0e-9;
     
     public static final int NUM_BENCH = 223;
     public static final double HEAD_LENGTH = 3.41;
@@ -14,8 +15,6 @@ public class Solve {
     public static final double EXTENT_LENGTH = 0.275;
     public static final double INIT_THETA = 16 * DPI;
     public static final double HEAD_VELOCITY = 1.0;
-    
-    public static final double EPS = 1.0e-9;
     
     public static Vector[] points(double time, Curve curve) {
         double theta = Math.sqrt(2.0 / curve.k * (curve.L(INIT_THETA) - time * HEAD_VELOCITY));
