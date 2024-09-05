@@ -1,4 +1,5 @@
 public class Vector {
+    
     public double x, y;
     
     public Vector(double x, double y) {
@@ -6,24 +7,20 @@ public class Vector {
         this.y = y;
     }
     
-    // 点积
-    public double dot(Vector other) {
-        return this.x * other.x + this.y * other.y;
+    public double dot(Vector o) {
+        return x * o.x + y * o.y;
     }
     
-    // 叉积
-    public double cross(Vector other) {
-        return this.x * other.y - this.y * other.x;
+    public double cross(Vector o) {
+        return x * o.y - y * o.x;
     }
     
-    // 向量长度
     public double length() {
-        return (double) Math.sqrt(this.x * this.x + this.y * this.y);
+        return Math.hypot(x, y);
     }
     
-    // 向量归一化
-    public Vector normalize() {
-        double len = length();
-        return new Vector(this.x / len, this.y / len);
+    public Vector norm() {
+        double f = 1.0 / length();
+        return new Vector(x * f, y * f);
     }
 }
