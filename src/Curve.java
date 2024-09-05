@@ -15,6 +15,10 @@ public class Curve {
         return ONE_OVER_2PI * d * theta * Math.sin(theta);
     }
     
+    public Vector p(double theta) {
+        return new Vector(x(theta), y(theta));
+    }
+    
     public double L(double theta) {
         return ONE_OVER_2PI * 0.5 * d * theta * theta;
     }

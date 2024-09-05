@@ -7,6 +7,14 @@ public class Vector {
         this.y = y;
     }
     
+    public Vector midpoint(Vector o) {
+        return new Vector((x + o.x) * 0.5, (y + o.y) * 0.5);
+    }
+    
+    public double angle(Vector o) {
+        return Math.atan2(o.y - y, o.x - x);
+    }
+    
     public double dot(Vector o) {
         return x * o.x + y * o.y;
     }
