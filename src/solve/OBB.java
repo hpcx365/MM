@@ -1,3 +1,5 @@
+package solve;
+
 public class OBB {
     
     public Vector center; // 中心点

@@ -1,3 +1,5 @@
+package solve;
+
 public class Vector {
     
     public double x, y;
