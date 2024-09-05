@@ -1,5 +1,7 @@
 package solve;
 
+import static solve.Utils.*;
+
 public class OBB {
     
     public Vector center; // 中心点
@@ -20,5 +22,42 @@ public class OBB {
                 new Vector(center.x + hw, center.y + hh),
                 new Vector(center.x - hw, center.y + hh),
         };
+    }
+    
+    public static OBB of(Vector p1, Vector p2, boolean isHead) {
+        return new OBB(p1.midpoint(p2), isHead ? HEAD_LENGTH : COMMON_LENGTH, BENCH_WIDTH, p1.angle(p2));
+    }
+    
+    public boolean collide(OBB o) {
+        if (detached(o, new Vector(Math.cos(angle), Math.sin(angle)))) {
+            return false;
+        }
+        if (detached(o, new Vector(-Math.sin(angle), Math.cos(angle)))) {
+            return false;
+        }
+        if (detached(o, new Vector(Math.cos(o.angle), Math.sin(o.angle)))) {
+            return false;
+        }
+        if (detached(o, new Vector(-Math.sin(o.angle), Math.cos(o.angle)))) {
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean detached(OBB o, Vector axis) {
+        Range range1 = projection(axis);
+        Range range2 = o.projection(axis);
+        return range1.min() > range2.max() || range2.min() > range1.max();
+    }
+    
+    private Range projection(Vector axis) {
+        double min = Double.MAX_VALUE;
+        double max = Double.MIN_VALUE;
+        for (Vector point : points) {
+            double proj = point.dot(axis);
+            min = Math.min(min, proj);
+            max = Math.max(max, proj);
+        }
+        return new Range(min, max);
     }
 }

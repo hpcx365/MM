@@ -1,7 +1,7 @@
 package solve;
 
-import static solve.Solve.HPI;
-import static solve.Solve.OODPI;
+import static solve.Utils.HPI;
+import static solve.Utils.OODPI;
 
 public class Curve {
     
@@ -29,7 +29,7 @@ public class Curve {
     }
     
     public double L(double theta) {
-        return OODPI * 0.5 * d * theta * theta;
+        return 0.5 * k * theta * theta;
     }
     
     public double chord(double theta1, double theta2) {
