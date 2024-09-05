@@ -18,7 +18,13 @@ public class Solve {
     public static final double EPS = 1.0e-9;
     
     public static Vector[] points(double time, Curve curve) {
-    
+        double theta = Math.sqrt(2.0 / curve.k * (curve.L(INIT_THETA) - time * HEAD_VELOCITY));
+        Vector[] res = new Vector[NUM_BENCH + 1];
+        for (int i = 0; i <= NUM_BENCH; i++) {
+            res[i] = curve.p(theta);
+            theta = nextTheta(theta, (i == 0 ? HEAD_LENGTH : COMMON_LENGTH) - 2.0 * EXTENT_LENGTH, curve);
+        }
+        return res;
     }
     
     public static double nextTheta(double theta, double chord, Curve curve) {
