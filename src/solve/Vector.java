@@ -33,4 +33,8 @@ public class Vector {
         double f = 1.0 / length();
         return new Vector(x * f, y * f);
     }
+    
+    public void print() {
+        System.out.printf("%.06f, %.06f, ", x, y);
+    }
 }
