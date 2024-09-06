@@ -51,7 +51,7 @@ public class Display {
         frame.getContentPane().repaint();
     }
     
-    private void createWindow() {
+    public void createWindow() {
         if (frame != null) {
             return;
         }
@@ -91,10 +91,10 @@ public class Display {
             
             @Override
             public void paint(Graphics g, JComponent c) {
-                int w = c.getWidth();
-                int h = c.getHeight();
-                
-                drawLines(g, curve, points, w, h);
+                if (curve == null || points == null) {
+                    return;
+                }
+                drawLines(g, curve, points, c.getWidth(), c.getHeight());
             }
         };
         
