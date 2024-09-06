@@ -102,7 +102,7 @@ public class Display {
         g2d.setRenderingHints(RENDERING_HINTS);
         
         g2d.setColor(new Color(150, 210, 243));
-        g2d.setStroke(new BasicStroke(12.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        g2d.setStroke(new BasicStroke(4.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         curve(g2d, curve, 0, 0, w, h);
         
         g2d.setColor(new Color(250, 46, 46));
