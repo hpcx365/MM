@@ -1,6 +1,8 @@
 package solve;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.plaf.PanelUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,7 +15,7 @@ public class Draw {
     public static final double IMG_EXTENT = 20.4;
     
     public static final BufferedImage GRID_IMG;
-    public static final Map<?, ?> renderingHints = Map.of(
+    public static final Map<?, ?> RENDERING_HINTS = Map.of(
             RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON,
             RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE,
             RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY,
@@ -27,6 +29,25 @@ public class Draw {
         } catch (IOException e) {
             throw new ExceptionInInitializerError(e);
         }
+    }
+    
+    public static void show(BufferedImage img) {
+        JFrame frame = new JFrame();
+        frame.setSize(960, 960);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        JPanel panel = new JPanel();
+        panel.setUI(new PanelUI() {
+            
+            @Override public void paint(Graphics g, JComponent c) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHints(RENDERING_HINTS);
+                g2d.drawImage(img, 0, 0, c.getWidth(), c.getHeight(), c);
+            }
+        });
+        
+        frame.setContentPane(panel);
+        frame.setVisible(true);
     }
     
     public static BufferedImage drawLines(Vector[] points, Curve curve) {
@@ -62,7 +83,7 @@ public class Draw {
     
     private static Graphics2D createGraphics(BufferedImage img) {
         Graphics2D g = img.createGraphics();
-        g.setRenderingHints(renderingHints);
+        g.setRenderingHints(RENDERING_HINTS);
         g.drawImage(GRID_IMG, 0, 0, IMG_WIDTH, IMG_WIDTH, null);
         g.translate(0, IMG_WIDTH);
         g.scale(1.0, -1.0);
