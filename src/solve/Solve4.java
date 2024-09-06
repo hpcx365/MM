@@ -5,17 +5,30 @@ import static solve.Utils.*;
 public class Solve4 {
     
     public static void main(String[] args) {
-        double leftR = 4.217;
-        double rightR = 4.218;
-        for (; ; ) {
-            double middleR = 0.5 * (leftR + rightR);
-            double deltaTheta = check(middleR);
-            if (deltaTheta >= 0.0) {
-                rightR = middleR;
-            } else {
-                leftR = middleR;
+//        double leftR = 4.217;
+//        double rightR = 4.218;
+//        for (; ; ) {
+//            double middleR = 0.5 * (leftR + rightR);
+//            double deltaTheta = check(middleR);
+//            if (deltaTheta >= 0.0) {
+//                rightR = middleR;
+//            } else {
+//                leftR = middleR;
+//            }
+//            System.out.println(middleR + "  " + deltaTheta);
+//        }
+        
+        double D = 1.7;
+        double R = 4.217401573082793;
+        Curve curve = new Curve(D, R);
+        double dT = (curve.thetaToLen(INIT_THETA) - curve.thetaToLen(curve.ThetaC)) / HEAD_VELOCITY;
+        for (int time = -100; time <= 100; time++) {
+            Moment moment = Moment.of(time + dT, curve);
+            Vector[] points = moment.velocities();
+            for (Vector p : points) {
+                System.out.printf("%.06f, %.06f, ", p.x(), p.y());
             }
-            System.out.println(middleR + "  " + deltaTheta);
+            System.out.println();
         }
     }
     

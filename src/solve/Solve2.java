@@ -10,7 +10,7 @@ public class Solve2 {
         double right = 412.5;
         for (; ; ) {
             double middle = 0.5 * (left + right);
-            double distance = distance(points(middle, curve));
+            double distance = distance(points(thetas(middle, curve), curve));
             if (equal(distance, 0.0)) {
                 System.out.println(middle);
                 break;

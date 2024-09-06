@@ -34,7 +34,7 @@ public class Solve3 {
         double distance = Double.MAX_VALUE;
         for (long n = 10000, i = n; i >= 0; i--) {
             double time0 = left + (right - left) * i / n;
-            double distance0 = distance(points(time0, curve));
+            double distance0 = distance(points(thetas(time0, curve), curve));
             if (distance > distance0) {
                 distance = distance0;
                 if (distance < 0.0) {

@@ -132,7 +132,7 @@ int main(){
             p[i].theta=root;
             cal_xy(i);
             double slop=cal_LineAngle(p[i].x,p[i].y,p[i-1].x,p[i-1].y);
-            v[i].theta=p[i].theta+pi/2-atan(1/p[i].theta);
+            v[i].theta=p[i].theta+pi/2-atan2(1.0, p[i].theta);
             v[i].size=v[i-1].size*cos(v[i-1].theta-slop)/cos(v[i].theta-slop);
         }
         

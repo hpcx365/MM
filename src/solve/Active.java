@@ -25,7 +25,7 @@ public class Active {
             
             Curve curve = new Curve(D, R);
             double dT = (curve.thetaToLen(INIT_THETA) - curve.thetaToLen(curve.ThetaC)) / HEAD_VELOCITY;
-            Vector[] points = points(T + dT, curve);
+            Vector[] points = points(thetas(T + dT, curve), curve);
             double distance = distance(points);
             
             System.out.printf("D = %.04f  R = %.04f  T = %.04f  Dis = %.06f\n", D, R, T, distance);

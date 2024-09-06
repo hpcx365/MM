@@ -81,7 +81,17 @@ public class Curve {
     }
     
     public double dir(double theta) {
-        return theta - HPI - Math.atan2(1.0, theta);
+        if (theta >= ThetaC) {
+            return theta - HPI - Math.atan2(1.0, theta);
+        }
+        if (theta <= -ThetaC) {
+            return -theta + HPI - Math.atan2(1.0, -theta);
+        }
+        if (theta >= 0.0) {
+            return ThetaC + AlphaC + (theta / ThetaC * (PI - 2.0 * AlphaC) - HPI);
+        } else {
+            return ThetaC + AlphaC - (theta / ThetaC * (PI - 2.0 * AlphaC) - HPI);
+        }
     }
     
     public double chord(double theta1, double theta2) {
