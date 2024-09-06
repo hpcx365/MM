@@ -15,6 +15,7 @@ public class Utils {
     public static final double BENCH_WIDTH = 0.30;
     public static final double EXTENT_LENGTH = 0.275;
     public static final double HEAD_VELOCITY = 1.0;
+    public static final double MAX_TURN_RADIUS = 4.5;
     
     public static Vector[] points(double time, Curve curve) {
         double theta = curve.toTheta(time);
