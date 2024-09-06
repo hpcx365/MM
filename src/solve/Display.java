@@ -10,8 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import static solve.Utils.INIT_THETA;
-import static solve.Utils.points;
+import static solve.Utils.*;
 
 public class Display {
     
@@ -25,13 +24,14 @@ public class Display {
     private JFrame frame;
     
     public static void main(String[] args) {
+        double deltaTime = 0.1;
+        Curve curve = new Curve(0.55, MAX_TURN_RADIUS);
+        
         SwingUtilities.invokeLater(() -> {
             Display display = new Display();
             
             ActionListener fresh = new ActionListener() {
                 
-                Curve curve = new Curve(0.55);
-                double deltaTime = 0.01;
                 long step;
                 
                 @Override public void actionPerformed(ActionEvent e) {
@@ -137,7 +137,7 @@ public class Display {
     }
     
     public void curve(Graphics2D g, Curve curve, int x, int y, int w, int h) {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = -1000; i < 1000; i++) {
             double t1 = i * INIT_THETA / 1000;
             double t2 = (i + 1) * INIT_THETA / 1000;
             Vector p = curve.pointAt(t1);

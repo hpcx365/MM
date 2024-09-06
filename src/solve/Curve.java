@@ -39,8 +39,8 @@ public class Curve {
     }
     
     private Vector f2(double theta) {
-        double t = ThetaC - Alpha + theta / ThetaC * (PI - 2.0 * Alpha);
-        return O2.sub(Vector.e(t).mul(R2));
+        double t = ThetaC + Alpha - theta / ThetaC * (PI - 2.0 * Alpha);
+        return O2.add(Vector.e(t).mul(R2));
     }
     
     public Vector pointAt(double theta) {
