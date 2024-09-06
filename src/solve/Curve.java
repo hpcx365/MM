@@ -22,7 +22,7 @@ public class Curve {
         this.AlphaC = Math.atan(1.0 / ThetaC);
         this.R1 = 2.0 / 3.0 * R * Math.sqrt(1.0 + 1.0 / (ThetaC * ThetaC));
         this.R2 = 0.5 * R1;
-        Vector t = Vector.e(ThetaC - AlphaC);
+        Vector t = Vector.unit(ThetaC - AlphaC);
         this.O1 = f0(ThetaC).sub(t.mul(R1));
         this.O2 = f0(-ThetaC).add(t.mul(R2));
     }
@@ -35,12 +35,12 @@ public class Curve {
     
     private Vector f1(double theta) {
         double t = ThetaC + AlphaC + theta / ThetaC * (PI - 2.0 * AlphaC);
-        return O1.sub(Vector.e(t).mul(R1));
+        return O1.sub(Vector.unit(t).mul(R1));
     }
     
     private Vector f2(double theta) {
         double t = ThetaC + AlphaC - theta / ThetaC * (PI - 2.0 * AlphaC);
-        return O2.add(Vector.e(t).mul(R2));
+        return O2.add(Vector.unit(t).mul(R2));
     }
     
     public Vector pointAt(double theta) {
@@ -80,8 +80,8 @@ public class Curve {
         return lenToTheta(thetaToLen(INIT_THETA) - time * HEAD_VELOCITY);
     }
     
-    public double alpha(double theta) {
-        return Math.atan2(1.0, theta);
+    public double dir(double theta) {
+        return theta - HPI - Math.atan2(1.0, theta);
     }
     
     public double chord(double theta1, double theta2) {
