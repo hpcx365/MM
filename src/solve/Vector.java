@@ -2,7 +2,7 @@ package solve;
 
 public record Vector(double x, double y) {
     
-    public static Vector e(double theta) {
+    public static Vector unit(double theta) {
         return new Vector(Math.cos(theta), Math.sin(theta));
     }
     
