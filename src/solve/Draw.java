@@ -33,10 +33,10 @@ public class Draw {
     
     public static void show(BufferedImage img) {
         JFrame frame = new JFrame();
-        frame.setSize(960, 960);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(960, 960));
         panel.setUI(new PanelUI() {
             
             @Override public void paint(Graphics g, JComponent c) {
@@ -47,6 +47,7 @@ public class Draw {
         });
         
         frame.setContentPane(panel);
+        frame.pack();
         frame.setVisible(true);
     }
     
