@@ -6,6 +6,10 @@ public record Vector(double x, double y) {
         return new Vector(x + o.x, y + o.y);
     }
     
+    public Vector sub(Vector o) {
+        return new Vector(x - o.x, y - o.y);
+    }
+    
     public Vector rotate(double angle) {
         double cos = Math.cos(angle);
         double sin = Math.sin(angle);
