@@ -26,7 +26,7 @@ public class Solve4 {
             Moment moment = Moment.of(time + dT, curve);
             Vector[] points = moment.velocities();
             for (Vector p : points) {
-                System.out.printf("%.06f, %.06f, ", p.x(), p.y());
+                System.out.printf("%.06f, ", p.length());
             }
             System.out.println();
         }
