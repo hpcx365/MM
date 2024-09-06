@@ -19,8 +19,7 @@ public class Active {
         JSlider tSlider = new JSlider(JSlider.HORIZONTAL, -1000000, 1000000, 0);
         
         ChangeListener cl = e -> {
-//            double D = dSlider.getValue() * 0.0001;
-            double D = 1.7;
+            double D = dSlider.getValue() * 0.0001;
             double R = rSlider.getValue() * 0.0001;
             double T = tSlider.getValue() * 0.0001;
             
