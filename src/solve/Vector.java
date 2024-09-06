@@ -16,6 +16,11 @@ public record Vector(double x, double y) {
         return new Vector((x + o.x) * 0.5, (y + o.y) * 0.5);
     }
     
+    public Vector lambda(Vector o, double l) {
+        double m = 1.0 - l;
+        return new Vector(x * l + o.x * m, y * l + o.y * m);
+    }
+    
     public double angle(Vector o) {
         return Math.atan2(o.y - y, o.x - x);
     }
