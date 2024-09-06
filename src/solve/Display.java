@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import static solve.Utils.*;
+import static solve.Utils.INIT_THETA;
 
 public class Display {
     
@@ -22,27 +22,6 @@ public class Display {
     private double positionY = 0.0;
     
     private JFrame frame;
-    
-    public static void main(String[] args) {
-        double deltaTime = 0.1;
-        Curve curve = new Curve(0.55, MAX_TURN_RADIUS);
-        
-        SwingUtilities.invokeLater(() -> {
-            Display display = new Display();
-            
-            ActionListener fresh = new ActionListener() {
-                
-                long step;
-                
-                @Override public void actionPerformed(ActionEvent e) {
-                    display.show(curve, points(step++ * deltaTime, curve));
-                }
-            };
-            
-            Timer timer = new Timer(10, fresh);
-            timer.start();
-        });
-    }
     
     public void show(Curve curve, Vector[] points) {
         this.curve = curve;
