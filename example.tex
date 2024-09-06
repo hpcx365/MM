@@ -1,0 +1,362 @@
+%\documentclass{cumcmthesis}
+\documentclass[withoutpreface,bwprint]{cumcmthesis} %去掉封面与编号页，电子版提交的时候使用。
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{url}   % 网页链接
+\usepackage{subcaption} % 子标题
+\newcommand{\tbf}[1]{\textbf{#1}}
+\title{“板凳龙” 闹元宵}
+\tihao{A}
+\baominghao{4321}
+\schoolname{XX大学}
+\membera{ }
+\memberb{ }
+\memberc{ }
+\supervisor{ }%辅导老师
+\yearinput{2023}
+\monthinput{9}
+\dayinput{8}
+
+\begin{document}
+
+\maketitle
+ \begin{abstract}
+    板凳龙（又称盘龙）是浙闽地区传统的民俗文化活动，具有重要的文化和观赏价值。
+    一般来说，盘龙表演时，在舞龙自由盘入盘出（即不发生过碰撞）的前提下，盘龙面积越小行进越快观赏性越好。
+    本文基于板凳龙的基本结构与演示特点，借助牛顿迭代法，分割轴定理等算法，对于盘龙表演的各个步骤建立了数学模型。
+    最终，模型为板凳龙表演提供了理论依据，有助于指导实际表演中的设计与实施。
+
+    \tbf{针对问题1}
+    首先我们根据龙头前把手的初始位置和速度求解出任意时刻其位置，接着利用牛顿迭代法逐一推导出各把手的位置。
+    对于速度的求解，我们同样利用龙头前把手的速度，每一把手和前把手的位置关系迭代求解。
+
+    \tbf{针对问题2}
+    此问中我们将板凳抽象为一个个的矩形，利用相交检测算法，计算出每一时刻任意两个板凳的最小距离，求得盘入的最终时刻，使得板凳之间恰好不发生碰撞。
+
+    \tbf{针对问题3}
+    我们可以发现满足条件的螺距具有单调性，使用二分算法求解满足题意的最小螺距。再判断每个螺距是否合法的过程中，使用启发式算法加快了临界值的收敛，提高了运算的精度。
+
+    \tbf{针对问题4}
+
+    \tbf{针对问题5}
+\keywords{OBB模型\quad  分割轴定理\quad   牛顿迭代法\quad  xxx\quad xxx\quad}
+\end{abstract}
+
+\tableofcontents
+
+\newpage
+
+\section{问题重述}
+
+\subsection{问题背景}
+板凳龙（又称盘龙）是浙江、福建地区极具代表性的传统民俗文化活动，承载了当地丰富的文化内涵与历史记忆。
+这种表演强调龙的柔韧性与灵活性，表演者在狭小的空间内舞龙，使其自由地盘入盘出，展示出极强的观赏性。
+
+然而，如何提高表演的观赏性和效率，一直是板凳龙传承与创新中的一个重要课题。
+一般来说，板凳龙表演的理想状态是，在保持龙体盘绕自由、不发生碰撞的前提下，盘龙的面积越小，行进速度越快，整体的视觉效果也越好。
+这就对龙体的行进路径、旋转角度和空间布局提出了较高要求。
+
+为了解决这一问题，本文基于板凳龙的基本结构与表演特点，xxxxx
+
+本文所建立的模型为板凳龙表演的优化提供了理论依据。该模型不仅有助于指导实际表演中的设计与实施，还能够为后续板凳龙的传承与创新提供科学支持，提升表演的整体质量与艺术表现力。
+
+\subsection{问题要求}
+
+在盘龙表演过程中，龙体以等距螺旋线（即盘入曲线）的轨迹向中心逐渐盘入。
+当达到一定距离时，龙头将在一个预定的圆形区域内以S型曲线的方式掉头，完成方向的转换。
+之后，龙体开始沿着盘出曲线向外盘出，盘出曲线与盘入曲线在中心点上呈对称分布，形成优美的螺旋形态。
+
+为了保证整个表演流畅、协调且具有观赏性，我们需要对多个关键因素进行合理的规划和优化。
+例如，螺旋线的螺距大小直接影响龙体的盘入速度和空间占用情况，若螺距过小可能导致龙体的过度拥挤，螺距过大则可能降低视觉效果。
+与此同时，龙头的行进速度也至关重要，需确保速度与螺距的合理配合，以避免过快或过慢的运动导致表演失衡或拖延。
+此外，龙头在盘入至掉头时的路线规划，需要保证掉头的速度，同时保持整体造型的流畅性和美感。
+
+现阶段，我们被要求解决如下问题：
+
+\newpage
+
+\tbf{问题一：} 龙头以恒定的速度前进，求出0~300秒每一时刻各把手的位置和速度，将结果保存提交
+
+\tbf{问题二：} 舞龙队以第一问的路线盘入，确定盘入的终止时刻（板凳之间即将发生碰撞），求出此时各把手的位置和速度，将结果保存
+
+\tbf{问题三：} 给定一个大小为定值的圆形调头区域，确定一个最小的螺距，使得龙头前把手能够沿着螺线盘入调头空间
+
+\tbf{问题四：} 给定盘入螺线的螺距和调头路线的形状，在第三问的调头区域中调整调头路线使得调头路线最短，并记录调头开始前后100秒内各把手的位置和速度，将结果保存
+
+\tbf{问题五：} 舞龙队以第四问设定的路径前进，求龙头的最大行进速度使得各把手速度不超过2m/s
+
+\section{问题分析}
+本题研究了盘龙表演各个步骤中的模型建立和优化问题，我们建立平面的极坐标系，基于极坐标系对问题进行求解。
+现在对每个问题逐一进行分析。
+\subsection{问题一分析}
+
+第一问要求建立模型计算舞龙队在螺线上运动的位置和参数。首先我们建立螺线的参数方程，
+然后根据龙头前把手的运动速度和初始位置，推导龙头前把手在不同时刻的位置。
+接着，考虑各把手之间是由直线连接，我们利用牛顿迭代法从龙头前把手开始逐步推导各把手的位置，完成求解。
+对于速度的求解，我们利用龙头前把手的速度，和已经求解出的每一把手和前把手的位置关系，求解出每一把手和前把手的速度关系，
+迭代求出每一把手的速度。
+\subsection{问题二分析}
+
+第二问·，我们将表演中的板凳抽象为矩形，并通过几何方法对其进行建模。
+为了确保板凳在盘入过程中不会发生碰撞，我们引入了相交检测算法，
+用于实时计算任意两个板凳在每一时刻的最小距离。
+通过这个算法，我们可以监控板凳之间的相对位置。
+在盘龙的盘入过程中，随着板凳之间的距离逐渐缩小，我们通过该检测算法确定盘入的最终时刻，
+即所有板凳之间的距离达到一个临界值，恰好不发生碰撞。
+\subsection{问题三分析}
+
+
+\subsection{问题四分析}
+
+
+\subsection{问题五分析}
+
+
+
+\section{模型假设}
+在第一问中，由于不考虑板凳之间的碰撞，我们将其简化成直线。之后我们将板凳抽象为矩形，每一把手抽象成点，板凳之间连接等长且稳定，表演者技巧熟练。
+
+
+
+
+\section{符号说明}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\linewidth}{lXl} 
+    \toprule
+    符号 & 说明 & 单位 \\
+    \midrule
+    $v_h$ & 龙头速度 & m \\
+    $L$ & 板长 & m \\
+    $d$ & 螺线螺距 & m \\
+    $\theta_0$ & 龙头前把手的极角 & rad \\
+    $s$ & 螺线从原点开始的长度& m \\
+    $r_o$ & 龙头前把手的初始时刻的位置 & m\\ 
+    $t$ & 盘龙运动的时刻 & s \\
+    $\theta$ & 任一把手的极角 & rad\\
+    $\theta_v$ & 任一把手速度的极角 & rad \\
+    $\theta_i$ & 第i个把手的极角 & rad \\
+    \bottomrule
+    \end{tabularx}
+    \end{table}
+
+\section{问题一模型的建立和求解}
+
+\subsection{位置求解}
+
+首先，我们根据龙头前把手的速度和初始位置推导龙头前把手在任意时刻的位置。等距螺旋线方程
+
+$$
+    r = \frac d {2\pi} \theta 
+$$
+
+得到螺线从原点开始的长度 
+
+$$
+    s = \int_0^{\theta} \frac{d}{2\pi} \alpha \mathrm d \alpha = \frac d {4\pi} \theta^2
+$$
+
+我们得到龙头前把手在任意时刻的位置
+
+$$
+    \theta_0 = \sqrt{\frac{4\pi}{d}\left[\frac{d}{4\pi}\left(r_o\right)^2-v_h t\right]}
+$$
+
+现在我们计算相邻两把手之间的距离从而得到位置的递推关系，如图所示，我们计算前一把手和后一把手之间的极坐标距离关系
+
+$$
+    L = \frac d {2\pi} \sqrt {\theta_i^2 + \theta_{i-1}^2  - 2\theta_{i}\theta_{i-1}\cos(\theta_i-\theta_{i-1})}
+$$
+
+我们对$\theta_i$求偏导
+
+$$
+    %\frac {\mathrm d L} {\mathrm d \theta_i} = \frac{d}{2\pi}\dot \frac{1}{2}\left(\theta_i^2+\theta_{i-1}^2-2\theta_i\theta_{i-1}\cos(\theta_i-\theta_{i-1})\right)^{-\frac 1 2}\left(2\theta_i-2\theta_{i-1}\cos(\theta_i-\theta_{i-1})+2\theta_i\theta_{i-1}\sin(\theta_i-\theta_{i-1})\right)
+\frac {\partial L} {\partial \theta_i} = \frac{d}{2\pi} \cdot \frac{1}{2} \left( \theta_i^2 + \theta_{i-1}^2 - 2\theta_i \theta_{i-1} \cos(\theta_i - \theta_{i-1}) \right)^{-\frac{1}{2}} \left( 2\theta_i - 2\theta_{i-1} \cos(\theta_i - \theta_{i-1}) + 2\theta_i \theta_{i-1} \sin(\theta_i - \theta_{i-1}) \right)
+$$
+
+\begin{figure}[h]  
+    \centering
+    \includegraphics[width=0.6\linewidth]{62562CA9D7528CB4CBFC52C671EE8E71} % 调整图片宽度为页面的60%
+    \caption{两把手之间的位置关系}
+\end{figure}
+
+接着，我们利用牛顿迭代法迭代求解每一把手的位置。首先简要介绍一下牛顿迭代法：
+
+牛顿迭代法（Newton's Method）是一种用于寻找函数零点的数值方法。它通过迭代逐步逼近方程 \( f(x) = 0 \) 的解。其核心思想是从初始猜测点开始，利用函数的导数信息来更新解的估计值，快速逼近实际解。
+
+\tbf{算法步骤：}
+
+1. 选择一个初始值 \( x_0 \)。
+
+
+2. 根据递推公式：
+   \[
+   x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}
+   \]
+   逐次更新解。
+
+
+3. 当 \( f(x_n) \) 足够接近零（即误差满足要求）时，停止迭代。
+
+该方法收敛速度快，需要初始猜测值接近实际解，且要求 \( f'(x_n) \neq 0 \)，非常符合本题的要求。
+
+我们利用牛顿迭代法求解得到第300s时各把手的位置分布情况如下
+
+\begin{figure}[H]  
+    \centering
+    \includegraphics[width=0.6\linewidth]{7737B94348A85AA3C5CC3C2F6AECF4DE} % 调整图片宽度为页面的60%
+    \caption{第300s时各把手的位置分布}
+\end{figure}
+
+其中特定时刻特定把手的位置如下
+
+\begin{figure}[H]  
+    \centering
+    \includegraphics[width=0.8\linewidth]{0AB6E8236405B9EFB5309559E9A0FBB0.png} % 调整图片宽度为页面的60%
+    \caption{特定时刻特定把手的位置}
+\end{figure}
+
+\subsection{速度求解}
+
+
+现在我们推导把手速度方向和其位置的关系：
+
+\begin{figure}[H]  
+    \centering
+    \includegraphics[width=0.6\linewidth]{F0E3A552EEB0C6B4AC0A1D1E4BBADCFD.jpg} % 调整图片宽度为页面的60%
+    \caption{位置和速度关系的推导图示}
+\end{figure}
+
+如图，设速度极角和微小圆弧的夹角为$\alpha$，此时有
+$$
+\begin{cases}
+\alpha = \arctan \displaystyle \frac {\mathrm d r}{r\mathrm d \theta} \\
+\mathrm d r = \displaystyle{\frac {d}{2\pi}} \mathrm d \theta \\
+\theta_v = \theta + \displaystyle{\frac \pi 2} -\alpha 
+\end{cases}
+$$
+
+得到 
+
+$$
+\theta_v = \theta + \frac {\pi} {2} - \arctan \frac 1 \theta
+$$
+
+现在，我们利用两把手之间沿板凳方向的速度分量一样这一物理性质，以及龙头前把手的速度和方向，我们便可以迭代求出每一时刻各把手的速度。
+
+结果如下：
+\begin{figure}[H]  
+    \centering
+    \includegraphics[width=0.8\linewidth]{A205D09ECABEC264D3C9312DBB542A9D.png} % 调整图片宽度为页面的60%
+    \caption{特定时刻特定把手的速度大小}
+\end{figure}
+
+\section{问题二模型的建立和求解}
+
+在这一问中我们将板凳抽象成一个个矩形，然后利用OBB2D相交检测算法求解任意时刻任意两板凳之间的距离。
+
+\subsection{OBB2D相交检测算法原理介绍}
+
+OBB2D（Oriented Bounding Box in 2D）相交检测算法用于检测两个二维有向包围盒是否相交。
+OBB 是旋转的矩形，适用于旋转物体的碰撞检测。
+该算法基于\textbf{分离轴定理（Separating Axis Theorem, SAT）}，该定理指出：如果存在一条轴能够将两个物体的投影完全分开，则它们不相交；
+反之如果在所有可能的分离轴上都没有完全分开，则两个图形相交。\footnote{具体证明见 \url{http://jkh.me/files/tutorials/Separating\%20Axis\%20Theorem\%20for\%20Oriented\%20Bounding\%20Boxes.pdf}}
+
+
+\noindent\tbf{算法步骤：}
+
+\begin{enumerate}
+    \item \textbf{定义 OBB}：每个 OBB 由中心点 $\mathbf{C}$、两个方向向量 $\mathbf{A}_1$ 和 $\mathbf{A}_2$ 以及每个方向上的半长 $l_1$ 和 $l_2$ 组成。方向向量分别与 OBB 的长边和短边平行。
+
+    \item \textbf{选择分离轴}：基于分离轴定理，检测分离轴可以从两个 OBB 的边的法向量中选择。在 2D 空间中，需要测试 4 条轴：
+    \begin{itemize}
+        \item OBB1 的边方向 $\mathbf{A}_1$ 和 $\mathbf{A}_2$。
+        \item OBB2 的边方向 $\mathbf{B}_1$ 和 $\mathbf{B}_2$。
+    \end{itemize}
+
+    \item \textbf{投影顶点到分离轴}：将两个 OBB 的四个顶点分别投影到每条分离轴上，计算它们在该轴上的投影区间（最大和最小投影值）。
+
+    \item \textbf{检测区间重叠}：对于每个分离轴，检查两个 OBB 的投影区间是否重叠。若存在一条分离轴上的投影区间不重叠，则 OBB 不相交。若所有轴上的区间都重叠，则两个 OBB 相交。
+\end{enumerate}
+
+\noindent\tbf{投影计算}
+
+假设 $P_1, P_2, P_3, P_4$ 为 OBB 的四个顶点，分离轴 $\mathbf{n}$，则顶点 $P_i$ 在轴 $\mathbf{n}$ 上的投影为：
+\[
+\text{projection}(P_i, \mathbf{n}) = P_i \cdot \mathbf{n}
+\]
+在每条分离轴上，计算所有顶点的最小投影值和最大投影值，比较两个 OBB 的投影区间是否有重叠：
+\[
+\text{interval} = [\min(\text{projection}), \max(\text{projection})]
+\]
+以其中一个方向为例
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.4\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{447353933DBA476DCB01DB0A59ED3D38.jpg}  
+    \end{minipage}
+    \hspace{0.05\textwidth}
+    \begin{minipage}{0.4\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{ADFAA2EF98593E9EB41D6DC32A20C94D.jpg} 
+    \end{minipage}
+    \caption{OBB2D相交检测演示}
+\end{figure}
+
+\subsection{问题求解}
+
+利用相交检测算法，我们可以模拟盘入过程，在每一时刻计算任意两个板凳矩形的距离，模拟的结果如下
+
+\begin{figure}[H]  
+    \centering
+    \includegraphics[width=0.6\linewidth]{849C46492BACD8768B84DB26C9B0ABF2.png} % 调整图片宽度为页面的60%
+    \caption{任意两板凳之间的最小距离随时间的变化的函数}
+\end{figure}
+
+不难发现，400s之前板凳之间留有足够的空间，在400s之后进行更为精细的模拟，得到如下结果：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{F4425BCBCBDF437D0334F55C1DFD126C.png}
+    \caption{400s之后最小距离随时间变化的函数}
+\end{figure}
+
+最终，我们得到最终时刻的精确解为412.4149011511356s，此时特定把手的位置和速度如下
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{00AA5244507EF438211FB4DBAB10C042.png}
+    \caption{盘入最终时刻特定把手的位置和速度}
+\end{figure}
+
+
+\section{问题三模型的建立和求解}
+
+\section{问题四模型的建立和求解}
+
+\section{问题五模型的建立和求解}
+
+\section{模型的评价和推广}
+
+
+%参考文献
+\begin{thebibliography}{9}%宽度9
+    \bibitem[1]{liuhaiyang2013latex}
+    刘海洋.
+    \newblock \LaTeX {}入门\allowbreak[J].
+    \newblock 电子工业出版社, 北京, 2013.
+    \bibitem[2]{mathematical-modeling}
+    全国大学生数学建模竞赛论文格式规范 (2023 年 修改).
+    \bibitem{3} \url{https://www.latexstudio.net}
+\end{thebibliography}
+
+\newpage
+%附录
+\begin{appendices}
+
+\end{appendices}
+
+\end{document} 
