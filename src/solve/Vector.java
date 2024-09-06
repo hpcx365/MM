@@ -1,13 +1,6 @@
 package solve;
 
-public class Vector {
-    
-    public double x, y;
-    
-    public Vector(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
+public record Vector(double x, double y) {
     
     public Vector add(Vector o) {
         return new Vector(x + o.x, y + o.y);
