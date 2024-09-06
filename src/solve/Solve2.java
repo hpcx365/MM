@@ -12,7 +12,7 @@ public class Solve2 {
             double middle = 0.5 * (left + right);
             double distance = distance(points(middle, curve));
             if (equal(distance, 0.0)) {
-                System.out.printf("%.06f", middle);
+                System.out.println(middle);
                 break;
             }
             if (distance > 0.0) {
