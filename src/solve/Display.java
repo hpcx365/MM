@@ -4,15 +4,14 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.PanelUI;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
 import static solve.Utils.INIT_THETA;
+import static solve.Utils.points;
 
 public class Display {
     
@@ -26,10 +25,23 @@ public class Display {
     private JFrame frame;
     
     public static void main(String[] args) {
-        Curve curve = new Curve(0.55);
-        Vector[] points = Utils.points(300, curve);
-        Display display = new Display();
-        display.show(curve, points);
+        SwingUtilities.invokeLater(() -> {
+            Display display = new Display();
+            
+            ActionListener fresh = new ActionListener() {
+                
+                Curve curve = new Curve(0.55);
+                double deltaTime = 0.01;
+                long step;
+                
+                @Override public void actionPerformed(ActionEvent e) {
+                    display.show(curve, points(step++ * deltaTime, curve));
+                }
+            };
+            
+            Timer timer = new Timer(10, fresh);
+            timer.start();
+        });
     }
     
     public void show(Curve curve, Vector[] points) {
@@ -40,6 +52,10 @@ public class Display {
     }
     
     private void createWindow() {
+        if (frame != null) {
+            return;
+        }
+        
         MouseAdapter mouse = new MouseAdapter() {
             
             Point pre;
@@ -91,6 +107,13 @@ public class Display {
         
         frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            
+            @Override public void windowClosing(WindowEvent e) {
+                frame.dispose();
+                frame = null;
+            }
+        });
         frame.setContentPane(panel);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -117,7 +140,9 @@ public class Display {
         for (int i = 0; i < 1000; i++) {
             double t1 = i * INIT_THETA / 1000;
             double t2 = (i + 1) * INIT_THETA / 1000;
-            g.drawLine(toX(curve.x(t1), x, w), toY(curve.y(t1), y, h), toX(curve.x(t2), x, w), toY(curve.y(t2), y, h));
+            Vector p = curve.pointAt(t1);
+            Vector q = curve.pointAt(t2);
+            g.drawLine(toX(p.x(), x, w), toY(p.y(), y, h), toX(q.x(), x, w), toY(q.y(), y, h));
         }
     }
     

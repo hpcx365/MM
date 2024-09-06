@@ -2,6 +2,10 @@ package solve;
 
 public record Vector(double x, double y) {
     
+    public static Vector e(double theta) {
+        return new Vector(Math.cos(theta), Math.sin(theta));
+    }
+    
     public Vector mul(double m) {
         return new Vector(x * m, y * m);
     }

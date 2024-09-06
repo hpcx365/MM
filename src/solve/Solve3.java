@@ -26,8 +26,8 @@ public class Solve3 {
     
     public static double check(double d) {
         Curve curve = new Curve(d);
-        double endTheta = MAX_TURN_RADIUS / curve.k;
-//        double endTime = (curve.L(INIT_THETA) - curve.L(endTheta)) / HEAD_VELOCITY;
+        double endTheta = MAX_TURN_RADIUS / curve.K;
+//        double endTime = (curve.l(INIT_THETA) - curve.l(endTheta)) / HEAD_VELOCITY;
         double left = 216.32183;
         double right = 216.32184;
         

@@ -18,10 +18,10 @@ public class Utils {
     public static final double MAX_TURN_RADIUS = 4.5;
     
     public static Vector[] points(double time, Curve curve) {
-        double theta = curve.toTheta(time);
+        double theta = curve.timeToTheta(time);
         Vector[] res = new Vector[NUM_BENCH + 1];
         for (int i = 0; i <= NUM_BENCH; i++) {
-            res[i] = curve.p(theta);
+            res[i] = curve.pointAt(theta);
             theta = nextTheta(theta, (i == 0 ? HEAD_LENGTH : COMMON_LENGTH) - 2.0 * EXTENT_LENGTH, curve);
         }
         return res;
