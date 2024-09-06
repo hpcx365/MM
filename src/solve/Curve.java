@@ -27,18 +27,18 @@ public class Curve {
         this.O2 = f0(-ThetaC).add(t.mul(R2));
     }
     
-    public Vector f0(double theta) {
+    private Vector f0(double theta) {
         double x = K * theta * Math.cos(theta);
         double y = K * Math.abs(theta) * Math.sin(theta);
         return new Vector(x, y);
     }
     
-    public Vector f1(double theta) {
+    private Vector f1(double theta) {
         double t = ThetaC + Alpha + theta / ThetaC * (PI - 2.0 * Alpha);
         return O1.sub(Vector.e(t).mul(R1));
     }
     
-    public Vector f2(double theta) {
+    private Vector f2(double theta) {
         double t = ThetaC - Alpha + theta / ThetaC * (PI - 2.0 * Alpha);
         return O2.sub(Vector.e(t).mul(R2));
     }
