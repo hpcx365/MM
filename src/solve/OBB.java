@@ -28,26 +28,19 @@ public class OBB {
         return new OBB(p1.midpoint(p2), isHead ? HEAD_LENGTH : COMMON_LENGTH, BENCH_WIDTH, p1.angle(p2));
     }
     
-    public boolean collide(OBB o) {
-        if (detached(o, new Vector(Math.cos(angle), Math.sin(angle)))) {
-            return false;
-        }
-        if (detached(o, new Vector(-Math.sin(angle), Math.cos(angle)))) {
-            return false;
-        }
-        if (detached(o, new Vector(Math.cos(o.angle), Math.sin(o.angle)))) {
-            return false;
-        }
-        if (detached(o, new Vector(-Math.sin(o.angle), Math.cos(o.angle)))) {
-            return false;
-        }
-        return true;
+    public double distance(OBB o) {
+        double res = -Double.MAX_VALUE;
+        res = Math.max(res, distance(o, new Vector(Math.cos(angle), Math.sin(angle))));
+        res = Math.max(res, distance(o, new Vector(-Math.sin(angle), Math.cos(angle))));
+        res = Math.max(res, distance(o, new Vector(Math.cos(o.angle), Math.sin(o.angle))));
+        res = Math.max(res, distance(o, new Vector(-Math.sin(o.angle), Math.cos(o.angle))));
+        return res;
     }
     
-    private boolean detached(OBB o, Vector axis) {
+    private double distance(OBB o, Vector axis) {
         Range range1 = projection(axis);
         Range range2 = o.projection(axis);
-        return range1.min() > range2.max() || range2.min() > range1.max();
+        return Math.max(range1.min() - range2.max(), range2.min() - range1.max());
     }
     
     private Range projection(Vector axis) {

@@ -26,19 +26,18 @@ public class Utils {
         return res;
     }
     
-    public static boolean check(Vector[] points) {
+    public static double distance(Vector[] points) {
         OBB[] obb = new OBB[NUM_BENCH];
         for (int i = 0; i < NUM_BENCH; i++) {
             obb[i] = OBB.of(points[i], points[i + 1], i == 0);
         }
+        double res = Double.MAX_VALUE;
         for (int i = 0; i < NUM_BENCH; i++) {
             for (int j = i + 2; j < NUM_BENCH; j++) {
-                if (obb[i].collide(obb[j])) {
-                    return false;
-                }
+                res = Math.min(res, obb[i].distance(obb[j]));
             }
         }
-        return true;
+        return res;
     }
     
     public static double nextTheta(double theta, double chord, Curve curve) {
