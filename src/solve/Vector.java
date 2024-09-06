@@ -2,6 +2,10 @@ package solve;
 
 public record Vector(double x, double y) {
     
+    public Vector mul(double m) {
+        return new Vector(x * m, y * m);
+    }
+    
     public Vector add(Vector o) {
         return new Vector(x + o.x, y + o.y);
     }
