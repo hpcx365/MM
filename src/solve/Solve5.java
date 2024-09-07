@@ -1,53 +1,30 @@
 package solve;
 
-import static solve.Utils.HEAD_VELOCITY;
-import static solve.Utils.INIT_THETA;
+import static solve.Utils.*;
 
 public class Solve5 {
     
-    public static final int NUM_THREAD = 20;
-    public static final double[] MAX_V = new double[NUM_THREAD];
-    
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         double D = 1.7;
         double R = 4.217401573082793;
         Curve curve = new Curve(D, R);
         double dT = (curve.thetaToLen(INIT_THETA) - curve.thetaToLen(curve.ThetaC)) / HEAD_VELOCITY;
+        Moment[] moments = new Moment[201];
         
-        Thread[] threads = new Thread[NUM_THREAD];
-        
-        long n = 200000000;
-        for (int i = 0; i < NUM_THREAD; i++) {
-            int j = i;
-            threads[j] = new Thread(() -> {
-                double leftT = -200.0;
-                double rightT = 200.0;
-                long s = n / NUM_THREAD * j;
-                long e = n / NUM_THREAD * (j + 1);
-                for (long step = s; step < e; step++) {
-                    double time = leftT + (rightT - leftT) * step / n;
-                    Moment moment = Moment.of(time + dT, curve);
-                    Vector[] points = moment.velocities();
-                    for (Vector p : points) {
-                        double v = p.length();
-                        MAX_V[j] = Math.max(MAX_V[j], v);
-                    }
-                    if (j == 0 && step % 1000 == 0) {
-                        double maxV = 0.0;
-                        for (int k = 0; k < NUM_THREAD; k++) {
-                            maxV = Math.max(maxV, MAX_V[k]);
-                        }
-                        System.out.println(maxV);
-                    }
-                }
-            });
-            threads[j].start();
+        for (int time = -100; time <= 100; time++) {
+            moments[time + 100] = Moment.of(time + dT, curve);
         }
         
-        Thread.sleep(1000);
-        
-        for (int i = 0; i < NUM_THREAD; i++) {
-            threads[i].join();
+        double maxV = 0.0;
+        for (int i = 1; i <= 200; i++) {
+            double[] t0 = moments[i - 1].thetas();
+            double[] t1 = moments[i].thetas();
+            for (int j = 0; j <= NUM_BENCH; j++) {
+                double v = curve.thetaToLen(t0[j]) - curve.thetaToLen(t1[j]);
+                maxV = Math.max(maxV, v);
+            }
         }
+        
+        System.out.println(maxV);
     }
 }

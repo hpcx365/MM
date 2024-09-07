@@ -25,10 +25,17 @@ public class Active {
             
             Curve curve = new Curve(D, R);
             double dT = (curve.thetaToLen(INIT_THETA) - curve.thetaToLen(curve.ThetaC)) / HEAD_VELOCITY;
-            Vector[] points = points(thetas(T + dT, curve), curve);
+            Moment moment = Moment.of(T + dT, curve);
+            Vector[] points = moment.points();
             double distance = distance(points);
+            Vector[] velocities = moment.velocities();
             
-            System.out.printf("D = %.04f  R = %.04f  T = %.04f  Dis = %.06f\n", D, R, T, distance);
+            double maxV = 0.0;
+            for (Vector v : velocities) {
+                maxV = Math.max(maxV, v.length());
+            }
+            
+            System.out.printf("D = %.04f  R = %.04f  T = %.04f  Dis = %.06f  Vel = %.06f\n", D, R, T, distance, maxV);
             display.show(curve, points);
         };
         dSlider.addChangeListener(cl);
