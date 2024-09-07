@@ -8,6 +8,7 @@ public class Curve {
     public final double AlphaC;
     public final double ThetaC;
     public final double R1, R2;
+    public final double A1, A2;
     public final Vector O1, O2;
     
     public Curve(double D) {
@@ -25,6 +26,8 @@ public class Curve {
         Vector t = Vector.unit(ThetaC - AlphaC);
         this.O1 = f0(ThetaC).sub(t.mul(R1));
         this.O2 = f0(-ThetaC).add(t.mul(R2));
+        this.A1 = R1 * (PI - 2.0 * AlphaC);
+        this.A2 = -R2 * (PI - 2.0 * AlphaC);
     }
     
     private Vector f0(double theta) {
@@ -52,7 +55,7 @@ public class Curve {
     
     public double thetaToLen(double theta) {
         if (theta >= ThetaC) {
-            return R1 * (PI - 2.0 * AlphaC) + 0.5 * K * theta * theta - 0.5 * K * ThetaC * ThetaC;
+            return A1 + 0.5 * K * (theta * theta - ThetaC * ThetaC);
         }
         if (theta >= 0.0) {
             return theta / ThetaC * R1 * (PI - 2.0 * AlphaC);
@@ -60,7 +63,7 @@ public class Curve {
         if (theta >= -ThetaC) {
             return theta / ThetaC * R2 * (PI - 2.0 * AlphaC);
         }
-        return -R2 * (PI - 2.0 * AlphaC) + 0.5 * K * ThetaC * ThetaC - 0.5 * K * theta * theta;
+        return A2 + 0.5 * K * (ThetaC * ThetaC - theta * theta);
     }
     
     public double lenToTheta(double len) {
