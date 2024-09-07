@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import static solve.Utils.INIT_THETA;
+import static solve.Utils.*;
 
 public class Display {
     
@@ -103,13 +103,16 @@ public class Display {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHints(RENDERING_HINTS);
         
-        g2d.setColor(new Color(150, 210, 243));
+        g2d.setColor(new Color(193, 218, 239));
         g2d.setStroke(new BasicStroke(4.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         curve(g2d, curve, 0, 0, w, h);
         
-        g2d.setColor(new Color(250, 46, 46));
+        g2d.setColor(new Color(157, 144, 144));
         g2d.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         plot(g2d, points, 0, 0, w, h);
+        
+        g2d.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        rectangle(g2d, points, 0, 0, w, h);
         
         g.setColor(new Color(0, 0, 0));
         scatter(g2d, points, 4, 0, 0, w, h);
@@ -136,6 +139,27 @@ public class Display {
     public void scatter(Graphics2D g, Vector[] points, int r, int x, int y, int w, int h) {
         for (Vector p : points) {
             g.fillOval(toX(p.x(), x, w) - r, toY(p.y(), y, h) - r, 2 * r, 2 * r);
+        }
+    }
+    
+    public void rectangle(Graphics2D g, Vector[] points, int x, int y, int w, int h) {
+        boolean[] collided = collided(points);
+        Color red = new Color(250, 46, 46);
+        Color green = new Color(12, 175, 12);
+        for (int i = 1; i < points.length; i++) {
+            Vector p = points[i - 1];
+            Vector q = points[i];
+            double slop = p.slop(q);
+            Vector a = p.add(new Vector(-EXTENT_LENGTH, 0.5 * BENCH_WIDTH).rotate(slop));
+            Vector b = p.add(new Vector(-EXTENT_LENGTH, -0.5 * BENCH_WIDTH).rotate(slop));
+            Vector c = q.add(new Vector(EXTENT_LENGTH, -0.5 * BENCH_WIDTH).rotate(slop));
+            Vector d = q.add(new Vector(EXTENT_LENGTH, 0.5 * BENCH_WIDTH).rotate(slop));
+            
+            g.setColor(collided[i - 1] ? red : green);
+            g.drawLine(toX(a.x(), x, w), toY(a.y(), y, h), toX(b.x(), x, w), toY(b.y(), y, h));
+            g.drawLine(toX(b.x(), x, w), toY(b.y(), y, h), toX(c.x(), x, w), toY(c.y(), y, h));
+            g.drawLine(toX(c.x(), x, w), toY(c.y(), y, h), toX(d.x(), x, w), toY(d.y(), y, h));
+            g.drawLine(toX(d.x(), x, w), toY(d.y(), y, h), toX(a.x(), x, w), toY(a.y(), y, h));
         }
     }
     
