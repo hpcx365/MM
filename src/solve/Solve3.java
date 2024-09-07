@@ -1,47 +1,34 @@
 package solve;
 
-import java.util.Random;
-
 import static solve.Utils.*;
 
 public class Solve3 {
     
-    public static final Random rnd = new Random();
-    
     public static void main(String[] args) {
-//        double left = 0.4503373930218438;
-//        double right = 0.450337393021875;
-//        for (; ; ) {
-//            double middle = 0.5 * (left + right);
-//            double distance = check(middle);
-//            System.out.println(middle + "\t\t" + distance);
-//            if (distance > 0.0) {
-//                right = middle;
-//            } else {
-//                left = middle;
-//            }
-//        }
-        System.out.println(check(0.45033739302186718));
-    }
-    
-    public static double check(double d) {
-        Curve curve = new Curve(d);
-        double endTheta = MAX_TURN_RADIUS / curve.K;
-//        double endTime = (curve.l(INIT_THETA) - curve.l(endTheta)) / HEAD_VELOCITY;
-        double left = 216.32183;
-        double right = 216.32184;
-        
-        double distance = Double.MAX_VALUE;
-        for (long n = 10000, i = n; i >= 0; i--) {
-            double time0 = left + (right - left) * i / n;
-            double distance0 = distance(points(thetas(time0, curve), curve));
-            if (distance > distance0) {
-                distance = distance0;
-                if (distance < 0.0) {
-                    return distance;
-                }
+        double leftD = 0.450;
+        double rightD = 0.451;
+        for (; ; ) {
+            double middleD = 0.5 * (leftD + rightD);
+            System.out.println(middleD);
+            if (check(middleD)) {
+                rightD = middleD;
+            } else {
+                leftD = middleD;
             }
         }
-        return distance;
+    }
+    
+    public static boolean check(double D) {
+        Curve curve = new Curve(D);
+        double leftT = 216.3;
+        double rightT = 216.4;
+        for (long n = 1000, i = 0; i <= n; i++) {
+            double time = leftT + (rightT - leftT) * i / n;
+            if (distance(points(thetas(time, curve), curve)) <= 0.0) {
+                System.out.printf("%.06f\n", time);
+                return false;
+            }
+        }
+        return true;
     }
 }

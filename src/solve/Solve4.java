@@ -1,52 +1,69 @@
 package solve;
 
+import java.io.FileWriter;
+import java.io.PrintWriter;
+
 import static solve.Utils.*;
 
 public class Solve4 {
     
-    public static void main(String[] args) {
-//        double leftR = 4.217;
-//        double rightR = 4.218;
-//        for (; ; ) {
-//            double middleR = 0.5 * (leftR + rightR);
-//            double deltaTheta = check(middleR);
-//            if (deltaTheta >= 0.0) {
-//                rightR = middleR;
-//            } else {
-//                leftR = middleR;
-//            }
-//            System.out.println(middleR + "  " + deltaTheta);
-//        }
+    public static void main(String[] args) throws Exception {
+        Curve curve = null;
+        double leftR = 4.2;
+        double rightR = 4.3;
+        while (rightR - leftR >= 1.0e-12) {
+            double middleR = 0.5 * (leftR + rightR);
+            curve = new Curve(1.7, middleR);
+            double theta = getTheta(curve);
+            Vector o = curve.pointAt(0.0);
+            Vector h = curve.pointAt(theta);
+            if (o.sub(h).module() >= HEAD_LENGTH - 2.0 * EXTENT_LENGTH) {
+                rightR = middleR;
+            } else {
+                leftR = middleR;
+            }
+            System.out.println(middleR + "  " + theta);
+        }
         
-        double D = 1.7;
-        double R = 4.217401573082793;
-        Curve curve = new Curve(D, R);
+        PrintWriter pw = new PrintWriter(new FileWriter("4p.csv"));
+        PrintWriter vw = new PrintWriter(new FileWriter("4v.csv"));
+        
         double dT = (curve.thetaToLen(INIT_THETA) - curve.thetaToLen(curve.ThetaC)) / HEAD_VELOCITY;
         for (int time = -100; time <= 100; time++) {
             Moment moment = Moment.of(time + dT, curve);
-            Vector[] points = moment.velocities();
-            for (Vector p : points) {
-                System.out.printf("%.06f, ", p.module());
+            for (Vector p : moment.points()) {
+                pw.printf("%.06f, %.06f, ", p.x(), p.y());
             }
-            System.out.println();
+            for (Vector v : moment.velocities()) {
+                vw.printf("%.06f, ", v.module());
+            }
+            pw.println();
+            vw.println();
         }
+        
+        pw.close();
+        vw.close();
     }
     
-    public static double check(double R) {
-        Curve curve = new Curve(1.7, R);
-        double dT = (curve.thetaToLen(INIT_THETA) - curve.thetaToLen(curve.ThetaC)) / HEAD_VELOCITY;
-        double leftT = 12.3;
-        double rightT = 13.4;
-        double res = Double.MAX_VALUE;
-        double prevTheta = nextTheta(curve.timeToTheta(leftT + dT), HEAD_LENGTH - 2.0 * EXTENT_LENGTH, curve);
-        for (int n = 100000, i = 1; i <= n; i++) {
-            double time = leftT + (rightT - leftT) * i / n;
-            double currentTheta = nextTheta(curve.timeToTheta(time + dT), HEAD_LENGTH - 2.0 * EXTENT_LENGTH, curve);
-            res = Math.min(res, prevTheta - currentTheta);
-            if (res <= 0.0) {
-                return res;
+    public static double getTheta(Curve curve) {
+        double leftTheta = -curve.ThetaC;
+        double rightTheta = -curve.ThetaC;
+        
+        while (curve.O2.sub(curve.O1).cross(curve.pointAt(leftTheta).sub(curve.O2)) <= 0.0) {
+            leftTheta -= 0.01;
+        }
+        
+        for (; ; ) {
+            double middleTheta = 0.5 * (leftTheta + rightTheta);
+            double c = curve.O2.sub(curve.O1).cross(curve.pointAt(middleTheta).sub(curve.O2));
+            if (Math.abs(c) <= 1.0e-12) {
+                return middleTheta;
+            }
+            if (c <= 0.0) {
+                rightTheta = middleTheta;
+            } else {
+                leftTheta = middleTheta;
             }
         }
-        return res;
     }
 }

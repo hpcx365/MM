@@ -42,6 +42,8 @@ public class Active {
         rSlider.addChangeListener(cl);
         tSlider.addChangeListener(cl);
         
+        cl.stateChanged(null);
+        
         panel.setLayout(new GridLayout(3, 1));
         panel.add(dSlider);
         panel.add(rSlider);
