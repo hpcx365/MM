@@ -14,9 +14,9 @@ public class Active {
         
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
-        JSlider dSlider = new JSlider(JSlider.HORIZONTAL, 0, 100000, 50000);
-        JSlider rSlider = new JSlider(JSlider.HORIZONTAL, 0, 100000, 50000);
-        JSlider tSlider = new JSlider(JSlider.HORIZONTAL, -1000000, 1000000, 0);
+        JSlider dSlider = new JSlider(JSlider.HORIZONTAL, 1000, 100000, 50000);
+        JSlider rSlider = new JSlider(JSlider.HORIZONTAL, 1000, 100000, 50000);
+        JSlider tSlider = new JSlider(JSlider.HORIZONTAL, -2000000, 3000000, 0);
         
         ChangeListener cl = e -> {
             double D = dSlider.getValue() * 0.0001;
@@ -32,7 +32,7 @@ public class Active {
             
             double maxV = 0.0;
             for (Vector v : velocities) {
-                maxV = Math.max(maxV, v.length());
+                maxV = Math.max(maxV, v.module());
             }
             
             System.out.printf("D = %.04f  R = %.04f  T = %.04f  Dis = %.06f  Vel = %.06f\n", D, R, T, distance, maxV);
@@ -48,7 +48,7 @@ public class Active {
         panel.add(tSlider);
         
         frame.setContentPane(panel);
-        frame.setSize(600, 160);
+        frame.setSize(800, 160);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);

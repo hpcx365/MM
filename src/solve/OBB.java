@@ -25,7 +25,7 @@ public class OBB {
     }
     
     public static OBB of(Vector p1, Vector p2, boolean isHead) {
-        return new OBB(p1.midpoint(p2), isHead ? HEAD_LENGTH : COMMON_LENGTH, BENCH_WIDTH, p1.angle(p2));
+        return new OBB(p1.midpoint(p2), isHead ? HEAD_LENGTH : COMMON_LENGTH, BENCH_WIDTH, p1.slop(p2));
     }
     
     public double distance(OBB o) {

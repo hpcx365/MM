@@ -14,10 +14,12 @@ import static solve.Utils.*;
 
 public class Display {
     
+    public static final int INIT_WIDTH = 720;
+    
     private Curve curve;
     private Vector[] points;
     
-    private double pixelsPerMeter = 40.0;
+    private double pixelsPerMeter = 30.0;
     private double positionX = 0.0;
     private double positionY = 0.0;
     
@@ -82,7 +84,7 @@ public class Display {
         panel.addMouseListener(mouse);
         panel.addMouseWheelListener(mouse);
         panel.addMouseMotionListener(mouse);
-        panel.setPreferredSize(new Dimension(960, 960));
+        panel.setPreferredSize(new Dimension(INIT_WIDTH, INIT_WIDTH));
         
         frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

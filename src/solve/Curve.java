@@ -95,6 +95,6 @@ public class Curve {
     }
     
     public double chord(double theta1, double theta2) {
-        return pointAt(theta1).sub(pointAt(theta2)).length();
+        return pointAt(theta1).sub(pointAt(theta2)).module();
     }
 }

@@ -11,7 +11,7 @@ public class Solve2 {
         for (; ; ) {
             double middle = 0.5 * (left + right);
             double distance = distance(points(thetas(middle, curve), curve));
-            if (equal(distance, 0.0)) {
+            if (Math.abs(distance) < EPS) {
                 System.out.println(middle);
                 break;
             }
