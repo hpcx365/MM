@@ -9,27 +9,27 @@ public class Solve3 {
     public static final Random rnd = new Random();
     
     public static void main(String[] args) {
-//        double left = 0.4503373930218438;
-//        double right = 0.450337393021875;
-//        for (; ; ) {
-//            double middle = 0.5 * (left + right);
-//            double distance = check(middle);
-//            System.out.println(middle + "\t\t" + distance);
-//            if (distance > 0.0) {
-//                right = middle;
-//            } else {
-//                left = middle;
-//            }
-//        }
-        System.out.println(check(0.45033739302186718));
+        double left = 0.450337393027;
+        double right = 0.450337393028;
+        for (; ; ) {
+            double middle = 0.5 * (left + right);
+            double distance = check(middle);
+            System.out.println(middle + "\t\t" + distance);
+            if (distance > 0.0) {
+                right = middle;
+            } else {
+                left = middle;
+            }
+        }
+//        System.out.println(check(0.45033739302186718));
     }
     
     public static double check(double d) {
         Curve curve = new Curve(d);
         double endTheta = MAX_TURN_RADIUS / curve.K;
 //        double endTime = (curve.l(INIT_THETA) - curve.l(endTheta)) / HEAD_VELOCITY;
-        double left = 216.32183;
-        double right = 216.32184;
+        double left = 216.32190;
+        double right = 216.32192;
         
         double distance = Double.MAX_VALUE;
         for (long n = 10000, i = n; i >= 0; i--) {
@@ -38,6 +38,7 @@ public class Solve3 {
             if (distance > distance0) {
                 distance = distance0;
                 if (distance < 0.0) {
+                    System.out.println(time0);
                     return distance;
                 }
             }

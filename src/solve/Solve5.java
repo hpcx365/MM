@@ -6,7 +6,7 @@ public class Solve5 {
     
     public static void main(String[] args) {
         double D = 1.7;
-        double R = 4.217401573082793;
+        double R = 4.255243240108898;
         Curve curve = new Curve(D, R);
         double dT = (curve.thetaToLen(INIT_THETA) - curve.thetaToLen(curve.ThetaC)) / HEAD_VELOCITY;
         Moment[] moments = new Moment[201];
