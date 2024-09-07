@@ -18,6 +18,18 @@ public record Vector(double x, double y) {
         return new Vector(x - o.x, y - o.y);
     }
     
+    public double dot(Vector o) {
+        return x * o.x + y * o.y;
+    }
+    
+    public double cross(Vector o) {
+        return x * o.y - y * o.x;
+    }
+    
+    public Vector vertical() {
+        return new Vector(-y, x);
+    }
+    
     public Vector rotate(double angle) {
         double cos = Math.cos(angle);
         double sin = Math.sin(angle);
@@ -33,28 +45,16 @@ public record Vector(double x, double y) {
         return new Vector(x * l + o.x * m, y * l + o.y * m);
     }
     
-    public double angle(Vector o) {
+    public double slop(Vector o) {
         return Math.atan2(o.y - y, o.x - x);
     }
     
-    public double dot(Vector o) {
-        return x * o.x + y * o.y;
-    }
-    
-    public double cross(Vector o) {
-        return x * o.y - y * o.x;
-    }
-    
-    public double length() {
+    public double module() {
         return Math.hypot(x, y);
     }
     
     public Vector norm() {
-        double f = 1.0 / length();
+        double f = 1.0 / module();
         return new Vector(x * f, y * f);
-    }
-    
-    public void print() {
-        System.out.printf("%.06f, %.06f, ", x, y);
     }
 }
