@@ -121,9 +121,9 @@ public class Display {
     }
     
     public void curve(Graphics2D g, Curve curve, int x, int y, int w, int h) {
-        for (int i = -1000; i < 1000; i++) {
-            double t1 = i * INIT_THETA / 1000;
-            double t2 = (i + 1) * INIT_THETA / 1000;
+        for (long n = 2000, i = -n; i < n; i++) {
+            double t1 = i * INIT_THETA / n;
+            double t2 = (i + 1) * INIT_THETA / n;
             Vector p = curve.pointAt(t1);
             Vector q = curve.pointAt(t2);
             g.drawLine(toX(p.x(), x, w), toY(p.y(), y, h), toX(q.x(), x, w), toY(q.y(), y, h));
