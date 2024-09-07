@@ -38,7 +38,7 @@ public class Utils {
         res[0] = Vector.unit(curve.dir(thetas[0])).mul(HEAD_VELOCITY);
         for (int i = 1; i <= NUM_BENCH; i++) {
             double dir = curve.dir(thetas[i]);
-            double m = res[i - 1].dot(points[i - 1].sub(points[i]).norm()) / Math.cos(dir - points[i].angle(points[i - 1]));
+            double m = res[i - 1].dot(points[i - 1].sub(points[i]).norm()) / Math.cos(dir - points[i].slop(points[i - 1]));
             res[i] = Vector.unit(dir).mul(m);
         }
         return res;
@@ -58,6 +58,22 @@ public class Utils {
         return res;
     }
     
+    public static boolean[] collided(Vector[] points) {
+        OBB[] obb = new OBB[NUM_BENCH];
+        for (int i = 0; i < NUM_BENCH; i++) {
+            obb[i] = OBB.of(points[i], points[i + 1], i == 0);
+        }
+        boolean[] res = new boolean[NUM_BENCH];
+        for (int i = 0; i < NUM_BENCH; i++) {
+            for (int j = i + 2; j < NUM_BENCH; j++) {
+                if (obb[i].distance(obb[j]) <= EPS) {
+                    res[i] = res[j] = true;
+                }
+            }
+        }
+        return res;
+    }
+    
     public static double nextTheta(double theta, double chord, Curve curve) {
         double deltaTheta = DPI / 720.0; // 步长0.5度
         double currentTheta = theta + deltaTheta;
@@ -69,19 +85,15 @@ public class Utils {
         double right = currentTheta;
         for (; ; ) {
             double middle = 0.5 * (left + right);
-            double chord1 = curve.chord(theta, middle);
-            if (equal(chord, chord1)) {
+            double currentChord = curve.chord(theta, middle);
+            if (Math.abs(chord - currentChord) < EPS) {
                 return middle;
             }
-            if (chord < chord1) {
+            if (chord < currentChord) {
                 right = middle;
             } else {
                 left = middle;
             }
         }
-    }
-    
-    public static boolean equal(double a, double b) {
-        return Math.abs(a - b) < EPS;
     }
 }
